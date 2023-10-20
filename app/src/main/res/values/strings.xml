@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AINoise</string>
+
+    <string name="channel_id">Channel ID</string>
+    <string name="chanel_support_char" translatable="false">qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890 !#$%()+-:;&lt;=.>?@[]^_{}|~,&amp;</string>
+
+</resources>
