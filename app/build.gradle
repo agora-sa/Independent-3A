@@ -35,7 +35,6 @@ dependencies {
     // case 1: full libs
     def agora_sdk_version = "4.1.1.14"
     implementation "io.agora.rtc:agora-special-full:${agora_sdk_version}"
-    implementation "io.agora.rtc:full-screen-sharing:${agora_sdk_version}"
 
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
     implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"

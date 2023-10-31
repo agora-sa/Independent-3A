@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.tencent.trtc.audiocall.util.AudioProcessLogic;
 
@@ -53,6 +54,7 @@ public class FileRawActivity extends BaseActivity {
     private AppCompatEditText mFileName;
     private AppCompatButton mFileNameBtn;
     private ProgressBar progressBar;
+    private AppCompatTextView progressBarText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class FileRawActivity extends BaseActivity {
         mFileName = findViewById(R.id.text_file_name);
         mFileNameBtn = findViewById(R.id.btn_file_name);
         progressBar = findViewById(R.id.progress_bar);
+        progressBarText = findViewById(R.id.progress_bar_text);
 
         mProcessBtn.setOnClickListener(view -> {
             // takeVolumeAlgorithm();
@@ -110,6 +113,7 @@ public class FileRawActivity extends BaseActivity {
      */
     private void startProcessAudio() {
         progressBar.setVisibility(View.VISIBLE);
+        progressBarText.setVisibility(View.VISIBLE);
         hintKeyBoards(progressBar);
         new Thread(() -> {
             try {
@@ -131,6 +135,8 @@ public class FileRawActivity extends BaseActivity {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
+                        progressBarText.setVisibility(View.GONE);
+                        hintKeyBoards(progressBar);
                         Toast.makeText(mContext, "降噪处理完成", Toast.LENGTH_LONG).show();
                     }
                 });
