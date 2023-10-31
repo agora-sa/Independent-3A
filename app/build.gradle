@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "io.agora.ainoise"
-        minSdk 21
+        minSdk 29
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -32,9 +32,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    def agora_sdk_version = "4.2.3"
     // case 1: full libs
-    implementation "io.agora.rtc:full-sdk:${agora_sdk_version}"
+    def agora_sdk_version = "4.1.1.14"
+    implementation "io.agora.rtc:agora-special-full:${agora_sdk_version}"
     implementation "io.agora.rtc:full-screen-sharing:${agora_sdk_version}"
 
     implementation "com.squareup.okhttp3:okhttp:4.10.0"

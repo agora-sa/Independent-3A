@@ -24,4 +24,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ains_for_trtc" />
 
+    <View
+        android:id="@+id/line_start"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="20dp"
+        android:background="#545454"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ains_for_agora"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ains_for_source_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="音频文件降噪"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line_start" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/ains_for_text_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="请将文件先存到/sdcard/Android/data/io.agora.ainoise/files目录下"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ains_for_source_file"/>
+
+    <View
+        android:id="@+id/line_end"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="20dp"
+        android:background="#545454"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ains_for_text_file"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

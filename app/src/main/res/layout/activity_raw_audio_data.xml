@@ -53,7 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:digits="@string/chanel_support_char"
-            android:hint="@string/channel_id" />
+            android:hint="@string/channel_id"
+            android:text="123456"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_join"

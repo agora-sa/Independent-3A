@@ -131,7 +131,7 @@ namespace AINoise {
     int AudioProcessingDemo::ProcessAudioFrame(void* buffer, int sampleRate, int channels,
                                                int samplesPerChannel) {
 
-        // LOGD("sampleRate is %d , channels is %d , samplesPerChannel is %d , buffersize is %d \n", sampleRate, channels, samplesPerChannel,sizeof(buffer));
+        LOGD("sampleRate is %d , channels is %d , samplesPerChannel is %d , buffersize is %d \n", sampleRate, channels, samplesPerChannel,sizeof(buffer));
         uplink_frame_.buffer = buffer;
         uplink_frame_.sampleRate = sampleRate;
         uplink_frame_.channels = channels;

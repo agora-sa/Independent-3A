@@ -1,25 +1,23 @@
-package io.agora.ainoise;
+package io.agora.ainoise.activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.tencent.trtc.audiocall.util.AudioProcessLogic;
 
 import java.nio.ByteBuffer;
 
+import io.agora.ainoise.AiNoiseApp;
+import io.agora.ainoise.BaseActivity;
+import io.agora.ainoise.R;
 import io.agora.ainoise.utils.CommonUtil;
 import io.agora.ainoise.utils.TokenUtils;
 import io.agora.rtc2.ChannelMediaOptions;
@@ -33,7 +31,7 @@ import io.agora.rtc2.audio.AudioParams;
 /**
  * 集成声网音频裸数据，裸数据出来后通过jni调用独立库3A进行噪声消除，处理后的数据在给回声网SDK
  */
-public class AgoraRawActivity extends AppCompatActivity implements View.OnClickListener{
+public class AgoraRawActivity extends BaseActivity implements View.OnClickListener{
 
     private static final String TAG = "RawAudioDataActivity";
 
@@ -74,9 +72,6 @@ public class AgoraRawActivity extends AppCompatActivity implements View.OnClickL
         mProcess.setOnClickListener(this);
         join.setOnClickListener(this);
 
-        handler = new Handler(Looper.getMainLooper());
-
-        intiPermission();
         initEngine();
 
         // 初始化独立3A处理模块
@@ -121,7 +116,6 @@ public class AgoraRawActivity extends AppCompatActivity implements View.OnClickL
         switch (id) {
             case R.id.getUUID:
                 // do getUUID
-
                 break;
             case R.id.configure:
                 // do configure
@@ -230,6 +224,11 @@ public class AgoraRawActivity extends AppCompatActivity implements View.OnClickL
         }
 
         @Override
+        public boolean onPublishAudioFrame(String channelId, int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type) {
+            return false;
+        }
+
+        @Override
         public int getObservedAudioFramePosition() {
             return 0;
         }
@@ -251,6 +250,11 @@ public class AgoraRawActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public AudioParams getEarMonitoringAudioParams() {
+            return null;
+        }
+
+        @Override
+        public AudioParams getPublishAudioParams() {
             return null;
         }
 
@@ -284,54 +288,4 @@ public class AgoraRawActivity extends AppCompatActivity implements View.OnClickL
             join.setEnabled(false);
         });
     }
-
-    protected final void runOnUIThread(Runnable runnable, long delay) {
-        if (handler != null && runnable != null) {
-            if (delay <= 0 && handler.getLooper().getThread() == Thread.currentThread()) {
-                runnable.run();
-            } else {
-                handler.postDelayed(runnable::run, delay);
-            }
-        }
-    }
-
-
-    // 是否同意了权限
-    protected boolean isRequested = false;
-    private ActivityResultLauncher<String[]> requestMultiplePermissionsLauncher;
-    private final String[] permissionsToRequest = {
-            Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-    };
-
-    private void intiPermission() {
-        // 初始化 ActivityResultLauncher
-        requestMultiplePermissionsLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestMultiplePermissions(), result -> {
-                    if (Boolean.TRUE.equals(result.get("android.permission.RECORD_AUDIO"))
-                            && Boolean.TRUE.equals(result.get("android.permission.WRITE_EXTERNAL_STORAGE"))
-                            && Boolean.TRUE.equals(result.get("android.permission.READ_EXTERNAL_STORAGE"))) {
-                        // 获取到权限
-                        joinChannel(et_channel.getText().toString());
-                        isRequested = true;
-                    } else {
-                        // 未获取到权限
-                        isRequested = false;
-                        Log.d(TAG, "使用demo需要 摄像头、录音、存储权限！");
-                    }
-                });
-    }
-
-    protected void requestPermissions() {
-        // 检查未被授予的权限
-        if (!isRequested) {
-            // 请求未被授予的权限
-            requestMultiplePermissionsLauncher.launch(permissionsToRequest);
-        } else {
-            joinChannel(et_channel.getText().toString());
-        }
-    }
-
 }
