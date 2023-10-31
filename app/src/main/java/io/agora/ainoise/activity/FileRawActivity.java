@@ -206,7 +206,7 @@ public class FileRawActivity extends BaseActivity {
     }
 
     /**
-     * 获取指定音频文件的采样率、声道数、位宽等信息
+     * 使用MediaExtractor获取指定音频文件的采样率、声道数、位宽等信息
      * @param filePath 音频文件在sdcard上的路径
      */
     public void getWavFileInfo(String filePath) {
