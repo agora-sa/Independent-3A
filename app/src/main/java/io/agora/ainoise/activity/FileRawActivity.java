@@ -182,7 +182,9 @@ public class FileRawActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        audioProcessLogic.entConfigure();
+        if (null != audioProcessLogic) {
+            audioProcessLogic.entConfigure();
+        }
     }
 
     /**
