@@ -11,7 +11,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.tencent.trtc.audiocall.util.AudioProcessLogic;
+import io.agora.ainoise.utils.AudioProcessLogic;
 
 import java.nio.ByteBuffer;
 
@@ -198,7 +198,7 @@ public class AgoraRawActivity extends BaseActivity implements View.OnClickListen
         @Override
         public boolean onRecordAudioFrame(String channel, int audioFrameType, int samples, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer byteBuffer, long renderTimeMs, int bufferLength) {
             audioProcessLogic.startAudioProcess(byteBuffer, samplesPerSec, channels, samples);
-            Log.i(TAG, "new buffer length is : " + byteBuffer.remaining());
+            // Log.i(TAG, "new buffer length is : " + byteBuffer.remaining());
             return true;
         }
 

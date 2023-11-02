@@ -1,6 +1,4 @@
-package com.tencent.trtc.audiocall;
-
-import static com.tencent.trtc.TRTCCloudDef.TRTC_AUDIO_FRAME_OPERATION_MODE_READWRITE;
+package io.agora.ainoise.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,8 +17,10 @@ import com.tencent.liteav.TXLiteAVCode;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 import com.tencent.trtc.TRTCCloudListener;
-import com.tencent.trtc.audiocall.util.AudioProcessLogic;
-import com.tencent.trtc.audiocall.util.PcmFileForQueue;
+
+import io.agora.ainoise.R;
+import io.agora.ainoise.utils.AudioProcessLogic;
+import io.agora.ainoise.utils.PcmFileForQueue;
 import com.tencent.trtc.debug.Constant;
 import com.tencent.trtc.debug.GenerateTestUserSig;
 
@@ -83,7 +83,7 @@ public class TRTCRawActivity extends TRTCBaseActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.audiocall_activity_calling);
+        setContentView(R.layout.activity_trtc_raw);
         getSupportActionBar().hide();
         handleIntent();
 
@@ -191,7 +191,7 @@ public class TRTCRawActivity extends TRTCBaseActivity implements View.OnClickLis
 
         TRTCCloudDef.TRTCAudioFrameCallbackFormat format = new TRTCCloudDef.TRTCAudioFrameCallbackFormat();
         format.channel = 1;
-        format.mode = TRTC_AUDIO_FRAME_OPERATION_MODE_READWRITE;
+        format.mode = TRTCCloudDef.TRTC_AUDIO_FRAME_OPERATION_MODE_READWRITE;
         format.sampleRate = 16000;
         format.samplesPerCall = format.sampleRate / 100;
         mTRTCCloud.setLocalProcessedAudioFrameCallbackFormat(format);
@@ -227,39 +227,11 @@ public class TRTCRawActivity extends TRTCBaseActivity implements View.OnClickLis
 //                audioProcess(byteBuffer, trtcAudioFrame.sampleRate, trtcAudioFrame.channel, trtcAudioFrame.sampleRate/100);
 
 
-                // 以下的代码是将回调回来的裸数据拆成10ms的小数据块
-                Log.d(TAG, "start...");
-                // 每一帧过来的数据大小
-                int dataLength = trtcAudioFrame.data.length;
-                // number of bytes per sample
-                int numBytesPerSample = 16 / 8;
-                // 10ms的数据大小
-                double unitData = trtcAudioFrame.sampleRate * trtcAudioFrame.channel * numBytesPerSample * 0.01;
-                // 需要循环的次数
-                int count = (int) (dataLength / unitData);
-                int remainder = (int) (dataLength % unitData);
-                count += remainder > 0 ? 1 : 0;
+                // 以下的代码是将回调回来的裸数据拆成10ms的小数据块,并优化了内存占用
+                audioProcess(trtcAudioFrame);
 
-                // 创建一个存放处理后数据的最终buffer
-                ByteBuffer mergedBuffer = ByteBuffer.allocate(dataLength);
-                byte[] chunkData = new byte[(int)unitData];
-                ByteBuffer newBuffer = ByteBuffer.allocateDirect(chunkData.length);
-                newBuffer.order(ByteOrder.LITTLE_ENDIAN);
-
-                for (int i = 0; i < count; i++) {
-                    System.arraycopy(trtcAudioFrame.data, i * (int)unitData, chunkData, 0, chunkData.length);
-                    newBuffer.put(chunkData);
-                    newBuffer.flip();
-                    audioProcessLogic.startAudioProcess(newBuffer, trtcAudioFrame.sampleRate, trtcAudioFrame.channel, trtcAudioFrame.sampleRate / 100);
-                    mergedBuffer.put(newBuffer);
-                    newBuffer.clear();
-                }
-                mergedBuffer.flip();
-                System.arraycopy(mergedBuffer.array(), 0, trtcAudioFrame.data, 0, mergedBuffer.array().length);
-                mergedBuffer.clear();
-                Log.d(TAG, "end...");
-
-//                pcmFileForQueue.addByteArrayToQueue(trtcAudioFrame.data);
+                // 添加byte[]到队列中，用户点击挂断的时候会将队列里面的数据持久化到文件
+                // pcmFileForQueue.addByteArrayToQueue(trtcAudioFrame.data);
             }
 
             @Override
@@ -287,6 +259,44 @@ public class TRTCRawActivity extends TRTCBaseActivity implements View.OnClickLis
 
             }
         });
+    }
+
+    /**
+     * 处理腾讯裸数据返回的byte[]
+     *
+     * @param trtcAudioFrame trtc返回的裸数据实体类
+     */
+    private void audioProcess(TRTCCloudDef.TRTCAudioFrame trtcAudioFrame) {
+        // Log.d(TAG, "start...");
+        // 每一帧过来的数据大小
+        int dataLength = trtcAudioFrame.data.length;
+        // number of bytes per sample
+        int numBytesPerSample = 16 / 8;
+        // 10ms的数据大小
+        double unitData = trtcAudioFrame.sampleRate * trtcAudioFrame.channel * numBytesPerSample * 0.01;
+        // 需要循环的次数
+        int count = (int) (dataLength / unitData);
+        int remainder = (int) (dataLength % unitData);
+        count += remainder > 0 ? 1 : 0;
+
+        // 创建一个存放处理后数据的最终buffer
+        ByteBuffer mergedBuffer = ByteBuffer.allocate(dataLength);
+        byte[] chunkData = new byte[(int)unitData];
+        ByteBuffer newBuffer = ByteBuffer.allocateDirect(chunkData.length);
+        newBuffer.order(ByteOrder.LITTLE_ENDIAN);
+
+        for (int i = 0; i < count; i++) {
+            System.arraycopy(trtcAudioFrame.data, i * (int)unitData, chunkData, 0, chunkData.length);
+            newBuffer.put(chunkData);
+            newBuffer.flip();
+            audioProcessLogic.startAudioProcess(newBuffer, trtcAudioFrame.sampleRate, trtcAudioFrame.channel, trtcAudioFrame.sampleRate / 100);
+            mergedBuffer.put(newBuffer);
+            newBuffer.clear();
+        }
+        mergedBuffer.flip();
+        System.arraycopy(mergedBuffer.array(), 0, trtcAudioFrame.data, 0, mergedBuffer.array().length);
+        mergedBuffer.clear();
+        // Log.d(TAG, "end...");
     }
 
     @Override

@@ -14,6 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AINoise"
 include ':app'
-include ':AudioCall'
 include ':Common'
 include ':Debug'

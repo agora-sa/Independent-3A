@@ -33,6 +33,8 @@
         </activity>
 
         <activity android:name=".activity.AgoraRawActivity"/>
+        <activity android:name=".activity.TRTCRawActivity"/>
+        <activity android:name=".activity.TRTCRawEnterActivity"/>
         <activity android:name=".activity.FileRawActivity"/>
     </application>
 

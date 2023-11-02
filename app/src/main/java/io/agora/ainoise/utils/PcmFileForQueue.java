@@ -1,4 +1,4 @@
-package com.tencent.trtc.audiocall.util;
+package io.agora.ainoise.utils;
 
 import android.util.Log;
 

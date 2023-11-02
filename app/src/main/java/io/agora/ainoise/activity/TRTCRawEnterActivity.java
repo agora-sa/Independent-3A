@@ -1,4 +1,4 @@
-package com.tencent.trtc.audiocall;
+package io.agora.ainoise.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tencent.trtc.debug.Constant;
+
+import io.agora.ainoise.R;
 
 /**
  * TRTC语音通话的入口页面（可以设置房间id和用户id）
@@ -25,7 +27,7 @@ public class TRTCRawEnterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.audiocall_activity_enter);
+        setContentView(R.layout.activity_trtc_raw_enter);
 
         getSupportActionBar().hide();
         mEditInputUserId = findViewById(R.id.et_input_username);

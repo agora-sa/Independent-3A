@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.tencent.trtc.audiocall.TRTCRawEnterActivity;
+import io.agora.ainoise.activity.TRTCRawEnterActivity;
 
 import io.agora.ainoise.activity.AgoraRawActivity;
 import io.agora.ainoise.activity.FileRawActivity;

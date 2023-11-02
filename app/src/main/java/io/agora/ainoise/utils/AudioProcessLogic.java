@@ -1,7 +1,6 @@
-package com.tencent.trtc.audiocall.util;
+package io.agora.ainoise.utils;
 
 import android.util.Log;
-import com.tencent.trtc.audiocall.HttpReq;
 
 import java.nio.ByteBuffer;
 

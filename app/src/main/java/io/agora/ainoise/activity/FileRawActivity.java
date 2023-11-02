@@ -15,7 +15,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import com.tencent.trtc.audiocall.util.AudioProcessLogic;
+import io.agora.ainoise.utils.AudioProcessLogic;
 
 import java.io.File;
 import java.io.FileInputStream;

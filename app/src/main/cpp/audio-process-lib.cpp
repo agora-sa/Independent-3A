@@ -9,7 +9,7 @@ std::unique_ptr<AINoise::AudioProcessingDemo> globalApm = nullptr;
  * 使用独立AI noise库处理音频裸数据
  */
 extern "C" JNIEXPORT jint JNICALL
-Java_com_tencent_trtc_audiocall_util_AudioProcessLogic_audioProcess(
+Java_io_agora_ainoise_utils_AudioProcessLogic_audioProcess(
         JNIEnv *env, jobject thiz, jobject buffer, jint sampleRate, jint channels, jint samplesPerChannel) {
 //    const char *hello = "Hello from C++";
 //    printf("%s", hello);
@@ -21,7 +21,7 @@ Java_com_tencent_trtc_audiocall_util_AudioProcessLogic_audioProcess(
 }
 
 extern "C" __attribute__((unused)) JNIEXPORT jint JNICALL
-Java_com_tencent_trtc_audiocall_util_audioProcessLogic_audioProcessForArray(
+Java_io_agora_ainoise_utils_AudioProcessLogic_audioProcessForArray(
         JNIEnv *env, jobject thiz, jbyteArray byteArray, jint sampleRate, jint channels, jint samplesPerChannel) {
     jbyte* byteArrayElements = env->GetByteArrayElements(byteArray, nullptr);
     jsize length = env->GetArrayLength(byteArray); // 获取数组长度
@@ -44,7 +44,7 @@ Java_com_tencent_trtc_audiocall_util_audioProcessLogic_audioProcessForArray(
  * 获取设备的UUID，用于请求业务服务器生成license
  */
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_tencent_trtc_audiocall_util_AudioProcessLogic_getUUID(JNIEnv *env, jobject thiz, jstring appId) {
+Java_io_agora_ainoise_utils_AudioProcessLogic_getUUID(JNIEnv *env, jobject thiz, jstring appId) {
     const char* appIdStr = env->GetStringUTFChars(appId, nullptr);
     if (appIdStr == nullptr) {
         // 处理异常情况，例如内存不足
@@ -62,7 +62,7 @@ Java_com_tencent_trtc_audiocall_util_AudioProcessLogic_getUUID(JNIEnv *env, jobj
  * 对AudioProcess模块进行初始化配置
  */
 extern "C" JNIEXPORT jint JNICALL
-Java_com_tencent_trtc_audiocall_util_AudioProcessLogic_configure(JNIEnv *env, jobject thiz, jstring appid,
+Java_io_agora_ainoise_utils_AudioProcessLogic_configure(JNIEnv *env, jobject thiz, jstring appid,
                                                                  jstring license) {
     const char* appIdStr = env->GetStringUTFChars(appid, JNI_FALSE);
     const char* licenseStr = env->GetStringUTFChars(license, JNI_FALSE);
@@ -95,7 +95,7 @@ Java_com_tencent_trtc_audiocall_util_AudioProcessLogic_configure(JNIEnv *env, jo
  * 创建全局的AudioProcess实例
  */
 extern "C" JNIEXPORT void JNICALL
-Java_com_tencent_trtc_audiocall_util_AudioProcessLogic_init(JNIEnv *env, jobject obj, jstring dumpPath) {
+Java_io_agora_ainoise_utils_AudioProcessLogic_init(JNIEnv *env, jobject obj, jstring dumpPath) {
     const char* dmpPath = env->GetStringUTFChars(dumpPath, nullptr);
     if (dmpPath == nullptr) {
         return; // 或者抛出异常或返回错误码
@@ -114,7 +114,7 @@ Java_com_tencent_trtc_audiocall_util_AudioProcessLogic_init(JNIEnv *env, jobject
  * 释放资源
  */
 extern "C" JNIEXPORT void JNICALL
-Java_com_tencent_trtc_audiocall_util_AudioProcessLogic_unConfigure(JNIEnv *env, jobject obj) {
+Java_io_agora_ainoise_utils_AudioProcessLogic_unConfigure(JNIEnv *env, jobject obj) {
     if (globalApm) {
         globalApm->UnConfigure();
         globalApm = nullptr;
