@@ -84,16 +84,18 @@ namespace AINoise {
         }
 
         LOGD("input dump_path_=%s", globalString.c_str());
-        // if (dump_path_ != nullptr && dump_path_[0] != '\0') {
+        if (!globalString.empty()) {
+            LOGD("not Null");
             AgoraUAP::AgoraAudioProcessing::DumpOption dumpOption(true, globalString.c_str());
             error = agora_audio_processing_->EnableDataDump(dumpOption);
+            LOGD("dumpOption error is%d" , error);
             if (error) {
                 printf("%s%s(%d): error %d!\n", TAG, __FUNCTION__, __LINE__, error);
                 return error;
             }
-//        } else {
-//            printf("dump_path_ is null!");
-//        }
+        } else {
+            printf("dump_path_ is null!");
+        }
 
         // set ans config
         AgoraUAP::AgoraAudioProcessing::AnsConfig ansConfig;

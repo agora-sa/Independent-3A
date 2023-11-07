@@ -97,9 +97,6 @@ Java_io_agora_ainoise_utils_AudioProcessLogic_configure(JNIEnv *env, jobject thi
 extern "C" JNIEXPORT void JNICALL
 Java_io_agora_ainoise_utils_AudioProcessLogic_init(JNIEnv *env, jobject obj, jstring dumpPath) {
     const char* dmpPath = env->GetStringUTFChars(dumpPath, nullptr);
-    if (dmpPath == nullptr) {
-        return; // 或者抛出异常或返回错误码
-    }
     try {
         globalApm = std::make_unique<AINoise::AudioProcessingDemo>(dmpPath);
     } catch (const std::exception& e) {
