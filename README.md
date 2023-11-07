@@ -14,7 +14,7 @@
     1、TRTC的SDK implementation "com.tencent.liteav:LiteAVSDK_TRTC:11.4.0.13217"
     2、声网的SDK implementation "io.agora.rtc:agora-special-full:4.1.1.14"
 
-1、在 string-configs中替换您从声网控制台申请的APPID和app_certificate 即可
+1、在gradle.properties中填写APPID等信息
 
 # 使用说明
 1、腾讯的裸数据降噪，我们可以多个用户加入到同一个房间，接收端听到的声音就是降噪后的声音

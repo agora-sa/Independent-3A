@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     protected Context mContext;
     protected Handler handler;
@@ -37,13 +37,15 @@ public class BaseActivity extends AppCompatActivity {
         intiPermission();
     }
 
+    protected abstract void next();
+
     protected void requestPermissions() {
         // 检查未被授予的权限
         if (!isRequested) {
             // 请求未被授予的权限
             requestMultiplePermissionsLauncher.launch(permissionsToRequest);
         } else {
-            // next();
+            next();
         }
     }
 
@@ -56,7 +58,7 @@ public class BaseActivity extends AppCompatActivity {
                             && Boolean.TRUE.equals(result.get("android.permission.WRITE_EXTERNAL_STORAGE"))
                             && Boolean.TRUE.equals(result.get("android.permission.READ_EXTERNAL_STORAGE"))) {
                         // 获取到权限
-                        // next();
+                        next();
                         isRequested = true;
                     } else {
                         // 未获取到权限

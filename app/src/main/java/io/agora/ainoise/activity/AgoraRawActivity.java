@@ -11,6 +11,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
+import io.agora.ainoise.BuildConfig;
 import io.agora.ainoise.utils.AudioProcessLogic;
 
 import java.nio.ByteBuffer;
@@ -76,7 +77,14 @@ public class AgoraRawActivity extends BaseActivity implements View.OnClickListen
 
         // 初始化独立3A处理模块
         audioProcessLogic = new AudioProcessLogic();
-        audioProcessLogic.audioProcessInit(getString(R.string.agora_app_id), "/sdcard/Android/data/io.agora.ainoise/files");
+        audioProcessLogic.audioProcessInit("/sdcard/Android/data/io.agora.ainoise/files");
+    }
+
+    @Override
+    protected void next() {
+        if (et_channel != null) {
+            joinChannel(et_channel.getText().toString());
+        }
     }
 
     private void initEngine() {
@@ -146,7 +154,9 @@ public class AgoraRawActivity extends BaseActivity implements View.OnClickListen
     protected void onDestroy() {
         super.onDestroy();
 
-        audioProcessLogic.entConfigure();
+        if (null != audioProcessLogic) {
+            audioProcessLogic.entConfigure();
+        }
     }
 
     private final IRtcEngineEventHandler iRtcEngineEventHandler = new IRtcEngineEventHandler() {

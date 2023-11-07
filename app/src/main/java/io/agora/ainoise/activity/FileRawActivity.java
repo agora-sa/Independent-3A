@@ -46,8 +46,6 @@ public class FileRawActivity extends BaseActivity {
     private AudioProcessLogic audioProcessLogic;
     private int channelCount;
     private int sampleRate;
-    private int bitDepth;
-    private int perSample;
     private int dataFor10Ms;
 
     private AppCompatButton mProcessBtn;
@@ -78,6 +76,11 @@ public class FileRawActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void next() {
+
+    }
+
     /**
      * 初始化需要用到的重要的音频信息
      */
@@ -85,7 +88,7 @@ public class FileRawActivity extends BaseActivity {
         String filePath = ROOT_PATH + mFileName.getText();
         // 初始化独立3A处理模块
         audioProcessLogic = new AudioProcessLogic();
-        audioProcessLogic.audioProcessInit(getString(R.string.agora_app_id), ROOT_PATH);
+        audioProcessLogic.audioProcessInit(ROOT_PATH);
 
         try {
             fileInputStream = new FileInputStream(filePath);
@@ -172,8 +175,6 @@ public class FileRawActivity extends BaseActivity {
             fos.flush();
             fos.close();
             fis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -229,8 +230,8 @@ public class FileRawActivity extends BaseActivity {
                 // 找到音频轨道
                 channelCount = format.getInteger(MediaFormat.KEY_CHANNEL_COUNT, 1);
                 sampleRate = format.getInteger(MediaFormat.KEY_SAMPLE_RATE, 48000);
-                bitDepth = format.getInteger(MediaFormat.KEY_PCM_ENCODING, 2);
-                perSample = format.getInteger("bits-per-sample", 16);
+                int bitDepth = format.getInteger(MediaFormat.KEY_PCM_ENCODING, 2);
+                int perSample = format.getInteger("bits-per-sample", 16);
 
                 dataFor10Ms = (int)(sampleRate * channelCount * bitDepth * 0.01);
                 Log.d("INFO", channelCount + "," + sampleRate + "," + bitDepth + "," + perSample + " , " + dataFor10Ms);

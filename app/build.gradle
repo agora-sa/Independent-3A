@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 }
 
+def properties = new Properties()
+properties.load(rootProject.file("gradle.properties").newDataInputStream())
+
 android {
     compileSdk 32
 
@@ -19,6 +22,10 @@ android {
                 cppFlags "-std=c++14"
             }
         }
+
+        buildConfigField "String", "AGORA_APP_ID", "${properties.getProperty("AGORA_APP_ID")}"
+        buildConfigField "String", "AGORA_CUSTOM_KEY", "${properties.getProperty("AGORA_CUSTOM_KEY")}"
+        buildConfigField "String", "AGORA_CUSTOM_SECRET", "${properties.getProperty("AGORA_CUSTOM_SECRET")}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

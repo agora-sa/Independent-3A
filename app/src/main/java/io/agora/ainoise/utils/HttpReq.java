@@ -7,7 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Base64;
+import java.util.Objects;
 
+import io.agora.ainoise.BuildConfig;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,8 +19,9 @@ import okhttp3.Response;
 
 public class HttpReq extends AsyncTask<Void, Void, String> {
     private static final String TAG = "HttpReq";
-    private String mUUID;
-    private String mAppId;
+
+    private final String mUUID;
+    private final String mAppId;
     private final LicenseCallBack mCallBack;
 
     public HttpReq(String uuid, String appId, LicenseCallBack callBack){
@@ -44,7 +48,7 @@ public class HttpReq extends AsyncTask<Void, Void, String> {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Content-Type","application/json")
-                .addHeader("Authorization","Basic ZDNiZDMyYTNjZmNlNDhlMjlmZTU3ZDVhOWZhZmIwZTQ6MWEyZmVhYjkzZjY1NDM4N2IyZjVjNzQ3NTYwMmQyYTk=")
+                .addHeader("Authorization",createAuthorizationHeader())
                 .post(requestBody)
                 .build();
 
@@ -54,7 +58,7 @@ public class HttpReq extends AsyncTask<Void, Void, String> {
 
             if (response.isSuccessful()) {
                 // 处理响应数据
-                return response.body().string();
+                return Objects.requireNonNull(response.body()).string();
             } else {
                 // 处理 HTTP 错误
                 return "HTTP Error: " + response.code();
@@ -82,9 +86,20 @@ public class HttpReq extends AsyncTask<Void, Void, String> {
         int res = mCallBack.initConfigure(mAppId, cert);
         Log.d(TAG, "onPostExecute res is : " + cert);
         if (res == 0) {
+            Log.d(TAG, "take license success!");
             // AINoise(getExternalFilesDir(null)+File.separator+downlink,getExternalFilesDir(null)+File.separator+uplink,dumpPath);
         }
         Log.d(TAG, "RES IS : " + res);
+    }
+
+    /**
+     * 创建 authorization header
+     */
+    private String createAuthorizationHeader() {
+        String plainCredentials = BuildConfig.AGORA_CUSTOM_KEY + ":" + BuildConfig.AGORA_CUSTOM_SECRET;
+        String base64Credentials = new String(Base64.getEncoder().encode(plainCredentials.getBytes()));
+        // 创建 authorization header
+        return "Basic " + base64Credentials;
     }
 
     public interface LicenseCallBack {

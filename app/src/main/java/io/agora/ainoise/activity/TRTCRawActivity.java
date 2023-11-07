@@ -94,7 +94,7 @@ public class TRTCRawActivity extends TRTCBaseActivity implements View.OnClickLis
 
         // 初始化独立3A处理模块
         audioProcessLogic = new AudioProcessLogic();
-        audioProcessLogic.audioProcessInit("c55045d149074edca8a0cd74405a9fcb", "/sdcard/Android/data/io.agora.ainoise/files");
+        audioProcessLogic.audioProcessInit("/sdcard/Android/data/io.agora.ainoise/files");
 
         // 初始化写pcm文件相关信息
         pcmFileForQueue = new PcmFileForQueue();
