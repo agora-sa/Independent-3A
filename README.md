@@ -28,6 +28,24 @@
     adb pull /sdcard/Android/data/io.agora.ainoise/files /xxx/xxx
     其中 near_out_xxx是处理后的文件
 
+# 独立3A集成注意事项
+1、设置音频的采集参数，音频的处理模式必须是"读写模式"。即：RAW_AUDIO_FRAME_OP_MODE_READ_WRITE
+2、设置音频的采集参数，采样率和采样点数的关系必须是100倍。比如：采样率是16000，采样点数是160
+    即：setRecordingAudioFrameParameters(16000, 1, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 160);
+3、独立3A一次处理10ms的数据，这个需要注意下
+    给的多了：多余的数据会被丢弃，不处理。给的少了：数据直接会被丢弃，不处理。
+4、接入其他厂商的裸数据需要注意
+    其中 网易和声网的一次都会给出10ms的数据，腾讯每次给出的数据是20ms。
+5、需要注意给出裸数据的数据格式
+    对于Android和IOS，声网和网易给出的都是ByteBuffer，腾讯给出的是byte[]
+6、Android和IOS的集成方式，为了独立3A执行的效率，统一使用C++的底层实现
+    Android采用JNI的方式; IOS端OC可以直接调用C++，如果是swift需要使用OC做bridge。
+7、使用独立3A需要使用到license，获取license需要使用到UUID
+    Android上每次获取到的UUID都会变化; IOS不会
+8、获取到的license，sdk是会缓存下来的，每次init的时候传"",sdk会取缓存，如果校验失败，
+    客户端需要先获取UUID，然后在获取license，然后在重新init。
+    如果init的时候传具体的值，sdk会更新缓存的license。
+
 
 
 

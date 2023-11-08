@@ -92,7 +92,7 @@ public class AgoraRawActivity extends BaseActivity implements View.OnClickListen
         try {
             RtcEngineConfig config = new RtcEngineConfig();
             config.mContext = context.getApplicationContext();
-            config.mAppId = getString(R.string.agora_app_id);
+            config.mAppId = BuildConfig.AGORA_APP_ID;
             config.mChannelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
             config.mEventHandler = iRtcEngineEventHandler;
             config.mAreaCode = ((AiNoiseApp)getApplication()).getGlobalSettings().getAreaCode();
