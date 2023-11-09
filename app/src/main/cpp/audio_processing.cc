@@ -50,8 +50,12 @@ namespace AINoise {
         std::ofstream logFile(log_path, std::ios::app);
 
         if (logFile.is_open()) {
+            auto now = std::chrono::system_clock::now();
+            std::time_t current_time = std::chrono::system_clock::to_time_t(now);
+            std::string time_str = std::ctime(&current_time);
+
             // 将日志消息写入文件
-            logFile << logMessage << std::endl;
+            logFile << time_str << ": " << logMessage << std::endl;
             logFile.close();
         } else {
             // std::cerr << "Unable to open log file." << std::endl;

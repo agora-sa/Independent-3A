@@ -207,8 +207,11 @@ public class AgoraRawActivity extends BaseActivity implements View.OnClickListen
 
         @Override
         public boolean onRecordAudioFrame(String channel, int audioFrameType, int samples, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer byteBuffer, long renderTimeMs, int bufferLength) {
+            long startTime = System.nanoTime();
             audioProcessLogic.startAudioProcess(byteBuffer, samplesPerSec, channels, samples);
-            // Log.i(TAG, "new buffer length is : " + byteBuffer.remaining());
+
+            double milliseconds = (System.nanoTime() - startTime) / 1e6; // 毫秒
+            Log.d("Timing", "Execution time: " + milliseconds + " ms");
             return true;
         }
 

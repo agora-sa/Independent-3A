@@ -263,11 +263,11 @@ public class TRTCRawActivity extends TRTCBaseActivity implements View.OnClickLis
 
     /**
      * 处理腾讯裸数据返回的byte[]
-     *
+     * 腾讯裸数据ains处理代码的耗时大概维持在3S左右
      * @param trtcAudioFrame trtc返回的裸数据实体类
      */
     private void audioProcess(TRTCCloudDef.TRTCAudioFrame trtcAudioFrame) {
-        // Log.d(TAG, "start...");
+        long startTime = System.nanoTime();
         // 每一帧过来的数据大小
         int dataLength = trtcAudioFrame.data.length;
         // number of bytes per sample
@@ -289,14 +289,16 @@ public class TRTCRawActivity extends TRTCBaseActivity implements View.OnClickLis
             System.arraycopy(trtcAudioFrame.data, i * (int)unitData, chunkData, 0, chunkData.length);
             newBuffer.put(chunkData);
             newBuffer.flip();
-            audioProcessLogic.startAudioProcess(newBuffer, trtcAudioFrame.sampleRate, trtcAudioFrame.channel, trtcAudioFrame.sampleRate / 100);
+            // audioProcessLogic.startAudioProcess(newBuffer, trtcAudioFrame.sampleRate, trtcAudioFrame.channel, trtcAudioFrame.sampleRate / 100);
             mergedBuffer.put(newBuffer);
             newBuffer.clear();
         }
         mergedBuffer.flip();
         System.arraycopy(mergedBuffer.array(), 0, trtcAudioFrame.data, 0, mergedBuffer.array().length);
         mergedBuffer.clear();
-        // Log.d(TAG, "end...");
+
+        double milliseconds = (System.nanoTime() - startTime) / 1e6; // 毫秒
+        Log.d("Timing", "Execution time: " + milliseconds + " ms");
     }
 
     @Override

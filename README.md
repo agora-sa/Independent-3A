@@ -43,7 +43,7 @@
 7、使用独立3A需要使用到license，获取license需要使用到UUID
     Android上每次获取到的UUID都会变化; IOS不会
 8、获取到的license，sdk是会缓存下来的，每次init的时候传"",sdk会取缓存，如果校验失败，
-    客户端需要先获取UUID，然后在获取license，然后在重新init。
+    客户端需要先获取UUID，然后再获取license，然后再重新init。
     如果init的时候传具体的值，sdk会更新缓存的license。
 
 
