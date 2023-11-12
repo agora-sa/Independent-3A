@@ -8,7 +8,7 @@
     <string name="audiocall_input_error_tip">房间号、用户名不能为空</string>
     <string name="audiocall_use_receiver">使用听筒</string>
     <string name="audiocall_use_speaker">使用扬声器</string>
-    <string name="audiocall_title">TRTC 语音通话示例</string>
+    <string name="audiocall_title">TRTC裸数据降噪</string>
     <string name="audiocall_mute_audio">关闭麦克风</string>
     <string name="audiocall_stop_mute_audio">打开麦克风</string>
     <string name="audiocall_enter_room">进入房间</string>
