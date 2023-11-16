@@ -13,10 +13,16 @@ Java_io_agora_ainoise_utils_AudioProcessLogic_audioProcess(
         JNIEnv *env, jobject thiz, jobject buffer, jint sampleRate, jint channels, jint samplesPerChannel) {
 //    const char *hello = "Hello from C++";
 //    printf("%s", hello);
-    if (globalApm) {
-        return globalApm->ProcessAudioFrame(env->GetDirectBufferAddress(buffer), sampleRate, channels, samplesPerChannel);
-    } else {
-        return -1;
+    try {
+        if (globalApm) {
+            return buffer ? globalApm->ProcessAudioFrame(env->GetDirectBufferAddress(buffer), sampleRate, channels, samplesPerChannel) : -2;
+        } else {
+            return -1;
+        }
+    } catch (const std::exception& e) {
+        return -3;
+    } catch (...) {
+        return -4;
     }
 }
 
