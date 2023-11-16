@@ -10,6 +10,8 @@
     为了保证代码的实现效率，本工程使用C++的代码来封装调用独立3A的代码，所以Android端代码需要通过JNI的方式来调用C++的底层实现
     工程采用CMake编译，所以您的工程需要有CMake和JNI的环境
 
+    本实例代码值提供demo参考，实际上线需要自己编写较为健壮的工程代码。
+
 # 需要用到的三方库
     1、TRTC的SDK implementation "com.tencent.liteav:LiteAVSDK_TRTC:11.4.0.13217"
     2、声网的SDK implementation "io.agora.rtc:agora-special-full:4.1.1.14"
@@ -45,6 +47,10 @@
     8、获取到的license，sdk是会缓存下来的，每次init的时候传"",sdk会取缓存，如果校验失败，
         客户端需要先获取UUID，然后再获取license，然后再重新init。
         如果init的时候传具体的值，sdk会更新缓存的license。
+    9、注意，降噪功能用完后一定即的调用unConfigure去释放资源，保证只有一个实例存在，
+        如果是多实例的话（指的是多个agora_audio_processing的实例）会存在问题。
+        如果是实例初始化失败，记得调用unConfigure将资源释放。
+
 
 
 
