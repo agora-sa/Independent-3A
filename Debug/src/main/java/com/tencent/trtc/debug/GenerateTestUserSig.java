@@ -109,7 +109,7 @@ public class GenerateTestUserSig {
      * Unit: second
      * Default value: 604800 (7 days)
      */
-    private static final int EXPIRETIME = 604800;
+    private static final int EXPIRETIME = 0;
 
 
     /**
@@ -133,7 +133,7 @@ public class GenerateTestUserSig {
      * and key to your backend server to prevent key disclosure and traffic stealing.
      * Reference: https://cloud.tencent.com/document/product/647/17275#Server
      */
-    public static final String SECRETKEY = "008af0e148640ed4d06fe0fc93808569db8f721b99d2ac628a369aff2a23fc1e";
+    public static final String SECRETKEY = "";
 
     /**
      * 计算 UserSig 签名
