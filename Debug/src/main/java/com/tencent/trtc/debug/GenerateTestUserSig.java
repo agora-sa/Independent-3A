@@ -96,7 +96,7 @@ public class GenerateTestUserSig {
      * .com/rav).
      * `SDKAppID` uniquely identifies a Tencent Cloud account.
      */
-    public static final int SDKAPPID = 1400245754;
+    public static final int SDKAPPID = 0;
 
     /**
      * 签名过期时间，建议不要设置的过短
@@ -109,7 +109,7 @@ public class GenerateTestUserSig {
      * Unit: second
      * Default value: 604800 (7 days)
      */
-    private static final int EXPIRETIME = 0;
+    private static final int EXPIRETIME = 604800;
 
 
     /**
